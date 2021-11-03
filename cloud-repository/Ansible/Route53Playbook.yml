@@ -1,0 +1,14 @@
+--- 
+- name: Create Route 53
+  hosts: localhost
+  tasks:
+  - name: "Create zone, record and state"
+    community.aws.route53:
+      state: present
+      zone: drscrumptious.com
+      alias: True
+      record: drscrumptious.com
+      type: A
+      value: http://drscrumptious.com.s3-website.us-east-2.amazonaws.com
+      alias_hosted_zone_id: Z04988872GDKMCUWDD42K
+      overwrite: True

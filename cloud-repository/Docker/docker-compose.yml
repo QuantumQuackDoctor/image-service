@@ -1,0 +1,86 @@
+# x-aws-cluster: ${AWS_ECS_CLUSTER}
+# x-aws-vpc: ${AWS_VPC}
+version: '3'
+
+services:
+  # user-ui: 
+  #   image: ${AWS_ID}.dkr.ecr.us-east-2.amazonaws.com/user-portal
+  #   depends_on:
+  #     - user-app
+  #     #- order-app
+  #     # - restaurant-app
+  #   ports:
+  #     - 4200:4200
+  #   networks:
+  #     - qqd-network
+
+  # admin-ui: 
+  #   image: 'qqd-webserver'
+  #   depends_on:
+  #     - user-app
+  #     - order-app
+  #     - restaurant-app
+  #     - gateway-app
+  #   build: ./User-Portal
+  #     # context: ../Docker-Portal/User-Portal
+  #     # dockerfile: C:\Users\Tony\QQD\Docker-Portal\User-Portal\Dockerfile
+  #   ports:
+  #     - 3002:80
+  #   container_name: webserver
+  #   networks:
+  #     - qqd-network
+
+
+  user-app:
+    image: ${AWS_ID}.dkr.ecr.us-east-2.amazonaws.com/user-service
+    ports:
+      - 8080:8080
+    environment:
+      - SPRING_APPLICATION_JSON=${SPRING_APPLICATION_JSON}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - qqd-network
+
+  order-app:
+    image: ${AWS_ID}.dkr.ecr.us-east-2.amazonaws.com/order-service
+    ports:
+      - 8090:8090
+    environment:
+      - SPRING_APPLICATION_JSON=${SPRING_APPLICATION_JSON}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - qqd-network
+
+  restaurant-app:
+    image: ${AWS_ID}.dkr.ecr.us-east-2.amazonaws.com/restaurant-service
+    ports:
+      - 8070:8070
+    environment:
+      - SPRING_APPLICATION_JSON=${SPRING_APPLICATION_JSON}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    networks:
+      - qqd-network
+
+  # gateway-app:
+  #   image: ${AWS_ID}.dkr.ecr.us-east-2.amazonaws.com/restaurant-service
+  #   # build:
+  #   #   context: .
+  #   #   dockerfile: ./restaurant-service/DockerFile
+  #   ports:
+  #     - 8080:80
+  #   # container_name: app
+  #   depends_on:
+  #     - postgres-db
+  #   environment:
+  #     - DB_SERVER=localhost
+  #     - POSTGRES_DB=test
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=password   
+  #   networks:
+  #     - qqd-network
+
+networks:
+  qqd-network:

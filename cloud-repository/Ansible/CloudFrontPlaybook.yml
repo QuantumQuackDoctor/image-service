@@ -1,0 +1,47 @@
+- name: create a basic distribution with defaults and tags
+  community.aws.cloudfront_distribution:
+    state: present
+    default_origin_domain_name: www.my-cloudfront-origin.com
+    tags:
+      Name: example distribution
+      Project: example project
+      Priority: '1'
+
+- name: update a distribution comment by distribution_id
+  community.aws.cloudfront_distribution:
+    state: present
+    distribution_id: E1RP5A2MJ8073O
+    comment: modified by ansible cloudfront.py
+
+- name: update a distribution comment by caller_reference
+  community.aws.cloudfront_distribution:
+    state: present
+    caller_reference: my cloudfront distribution 001
+    comment: modified by ansible cloudfront.py
+
+- name: update a distribution's aliases and comment using the distribution_id as a reference
+  community.aws.cloudfront_distribution:
+    state: present
+    distribution_id: E1RP5A2MJ8073O
+    comment: modified by cloudfront.py again
+    aliases: [ 'www.my-distribution-source.com', 'zzz.aaa.io' ]
+
+- name: update a distribution's aliases and comment using an alias as a reference
+  community.aws.cloudfront_distribution:
+    state: present
+    caller_reference: my test distribution
+    comment: modified by cloudfront.py again
+    aliases:
+      - www.my-distribution-source.com
+      - zzz.aaa.io
+
+- name: update a distribution's comment and aliases and tags and remove existing tags
+  community.aws.cloudfront_distribution:
+    state: present
+    distribution_id: E15BU8SDCGSG57
+    comment: modified by cloudfront.py again
+    aliases:
+      - tested.com
+    tags:
+      Project: distribution 1.2
+    purge_tags: yes
