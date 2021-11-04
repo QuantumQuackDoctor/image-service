@@ -1,9 +1,7 @@
 package com.ss.image;
 
-import com.database.ormlibrary.user.UserRoleEntity;
 import com.database.security.SecurityConfig;
 import com.fasterxml.jackson.databind.Module;
-import org.modelmapper.ModelMapper;
 import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
