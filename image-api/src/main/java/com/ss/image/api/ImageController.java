@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,11 +21,13 @@ public class ImageController {
     private final ImageService imageService;
 
     @GetMapping(value = "/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @PreAuthorize("permitAll()")
     public ResponseEntity<Resource> getImage(@PathVariable("id") Long id) throws ImageNotFoundException {
         return ResponseEntity.ok(imageService.getImage(id));
     }
 
     @PostMapping(value = "/upload/{aspect}")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<UploadReturn> uploadImage(@RequestPart("image") MultipartFile file,
                                                     @PathVariable Aspect aspect) throws IOException {
         UploadReturn uploadReturn = new UploadReturn();

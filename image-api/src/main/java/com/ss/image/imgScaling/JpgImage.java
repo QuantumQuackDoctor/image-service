@@ -18,13 +18,13 @@ public class JpgImage {
         source = ImageIO.read(imageFile);
         switch (aspect) {
             case square:
-                this.format = new SquareCompressed(Math.min(Math.min(source.getWidth(), source.getHeight()), 1080 ));
+                this.format = new SquareCompressed(Math.min(Math.min(source.getWidth(), source.getHeight()), 1080));
                 break;
             case maintain:
             default:
                 this.format = new AspectCompressed(
                         (float) source.getWidth() / (float) source.getHeight(),
-                        Math.max(source.getWidth(), 1920));
+                        Math.min(source.getWidth(), 1920));
         }
     }
 
